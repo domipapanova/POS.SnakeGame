@@ -1,0 +1,3 @@
+/tmp/tmp.sTvA1VHQt3/cmake-build-domka_version/CMakeFiles/rebuild_cache.dir
+/tmp/tmp.sTvA1VHQt3/cmake-build-domka_version/CMakeFiles/edit_cache.dir
+/tmp/tmp.sTvA1VHQt3/cmake-build-domka_version/CMakeFiles/SnakeGame.dir
