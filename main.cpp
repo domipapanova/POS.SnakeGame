@@ -1,27 +1,34 @@
-#include "server.h"
-#include "client.h"
+#include "Grid.h"
+#include "Game.h"
+#include "Snake.h"
 
 #include <iostream>
 #include <cstring>
+#include <SFML/Graphics.hpp>
 
-int main (int argc, char* argv[]) {
 
-    char* newArgv[argc - 1];
-    newArgv[0] = argv[0];
+int main () {
+    srand(time(NULL));
 
-    for(int i = 2; i <= argc - 1; i++) {
-        newArgv[i-1] = argv[i];
-    }
+//    sf::RenderWindow window(sf::VideoMode(800, 600), "SnakeGame");
+    Game* game = new Game(10, 5);
+    game->start();
+    game->stop();
+    delete game;
 
-    if (strcmp(argv[1], "server") == 0) {
-        return server(argc - 1, newArgv);
-    }
-    else if(strcmp(argv[1], "client") == 0) {
-        return client(argc - 1, newArgv);
-    }
-    else {
-        fprintf(stderr, "Wrong arguments\n");
-        return 1;
-    }
+
+//    while (window.isOpen())
+//    {
+//        sf::Event event;
+//        while (window.pollEvent(event))
+//        {
+//            if (event.type == sf::Event::Closed)
+//                window.close();
+//        }
+//
+//        window.clear();
+//
+//        window.display();
+//    }
 }
 
