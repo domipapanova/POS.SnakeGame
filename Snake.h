@@ -9,6 +9,10 @@ private:
     std::vector<Cell> body;
     Grid &grid;
     std::mutex &mutex;
+public:
+    std::mutex &getMutex() const;
+
+private:
     int dx;
     int dy;
 

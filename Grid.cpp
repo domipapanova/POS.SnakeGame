@@ -30,7 +30,10 @@ void Grid::clear() {
 // draw the grid to the console
 void Grid::draw() {
     std::lock_guard<std::mutex> lock(mutex);
+
     for (int y = 0; y < height; y++) {
+        std::cout << "|";
+
         for (int x = 0; x < width; x++) {
             switch (cells[y][x].cellType) {
                 case CellType::Empty:
@@ -44,22 +47,16 @@ void Grid::draw() {
                     break;
             }
         }
+        std::cout << "|";
         std::cout << std::endl;
     }
+    std::cout << "\n\n\n" << std::endl;
 }
 
 int Grid::getWidth() const {
     return width;
 }
 
-void Grid::setWidth(int width) {
-    Grid::width = width;
-}
-
 int Grid::getHeight() const {
     return height;
 }
-
-void Grid::setHeight(int height) {
-    Grid::height = height;
-};
