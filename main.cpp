@@ -1,27 +1,14 @@
-#include "server.h"
-#include "client.h"
+#include "Grid.h"
+#include "Game.h"
+#include "Snake.h"
 
 #include <iostream>
 #include <cstring>
 
-int main (int argc, char* argv[]) {
-
-    char* newArgv[argc - 1];
-    newArgv[0] = argv[0];
-
-    for(int i = 2; i <= argc - 1; i++) {
-        newArgv[i-1] = argv[i];
-    }
-
-    if (strcmp(argv[1], "server") == 0) {
-        return server(argc - 1, newArgv);
-    }
-    else if(strcmp(argv[1], "client") == 0) {
-        return client(argc - 1, newArgv);
-    }
-    else {
-        fprintf(stderr, "Wrong arguments\n");
-        return 1;
-    }
+int main () {
+    Game* game = new Game(10, 10);
+    game->start();
+    game->stop();
+    return 0;
 }
 
