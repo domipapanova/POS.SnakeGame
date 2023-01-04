@@ -108,6 +108,7 @@ char Game::clientHandler(int playerNum, int socket) {
         bzero(buffer, BUFFER_LENGTH);
         read(socket, buffer, BUFFER_LENGTH);
         s = buffer;
+        s.pop_back();
     }
     c = s[s.length() - 1]; // posledny char v stringu
     return c;
