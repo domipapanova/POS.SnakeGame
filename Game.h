@@ -7,16 +7,18 @@
 class Game {
 private:
     Grid grid;
-    Snake snake;
+    Snake snake1;
+    Snake snake2;
     std::mutex mutex;
-    std::thread inputThread;
+    std::thread player1Thread;
+    std::thread player2Thread;
     std::thread updateThread;
 public:
     Game(int width, int height);
     void start();
     void stop();
     static void inputHandler(Snake& snake);
-    static void update(Grid& grid, Snake& snake);
+    static void update(Grid& grid, Snake& snake1, Snake& snake2);
 };
 
 

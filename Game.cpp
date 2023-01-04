@@ -1,48 +1,48 @@
 #include "Game.h"
 #include <thread>
-#include <pthread.h>
 
 // new game with the given dimensions
 Game::Game(int width, int height)
-    : grid(width, height), snake(grid, mutex, width/2, height/2){   // snake spawn in the middle of the screen
-
+    : grid(width, height), snake1(grid, mutex, width/2, height/3, 1),
+      snake2(grid, mutex, width/2, height/3 * 2, 2) {   // snakes spawn in the middle of the grid
     grid.clear();
-    snake.spawnFruit();
+    snake1.spawnFruit();
+    snake2.spawnFruit();
     //grid.draw();
 }
 
+// create the players and update threads
 void Game::start() {
-    // create the input and update threads
-    inputThread = std::thread(&Game::inputHandler, std::ref(snake));
-    updateThread = std::thread(&Game::update, std::ref(grid), std::ref(snake));
-
-//    pthread_t inputThread;
-//    pthread_create(&inputThread, NULL, &Game::inputHandler, &snake)
-
+    player1Thread = std::thread(&Game::inputHandler, std::ref(snake1));
+    player2Thread = std::thread(&Game::inputHandler, std::ref(snake2));
+    updateThread = std::thread(&Game::update, std::ref(grid), std::ref(snake1), std::ref(snake2));
 }
 
+// stop the players and update threads
 void Game::stop() {
-    // stop the input and update threads
-    inputThread.join();
+    player1Thread.join();
+    player2Thread.join();
     updateThread.join();
 }
 
 
-void Game::update(Grid& grid, Snake& snake) {
+void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
     while (true) {
-        snake.move();
+        snake1.move();
+        snake2.move();
         grid.draw();
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
 
 void Game::inputHandler(Snake& snake) {
-//    std::lock_guard<std::mutex> lock(snake.getMutex());
     while (true) {
-        char c = std::cin.get();
-
+        std::string s;
+        std::cin >> s;
+        char c = s[s.length() - 1];
         switch (c) {
             case 'w':
+            case 'i':
                 snake.getMutex().lock();
                 if (snake.getDy() != 1) {
                     snake.setDx(0);
@@ -51,6 +51,7 @@ void Game::inputHandler(Snake& snake) {
                 snake.getMutex().unlock();
                 break;
             case 'a':
+            case 'j':
                 snake.getMutex().lock();
                 if (snake.getDx() != 1) {
                     snake.setDx(-1);
@@ -59,6 +60,7 @@ void Game::inputHandler(Snake& snake) {
                 snake.getMutex().unlock();
                 break;
             case 's':
+            case 'k':
                 snake.getMutex().lock();
                 if (snake.getDy() != -1) {
                     snake.setDx(0);
@@ -67,6 +69,7 @@ void Game::inputHandler(Snake& snake) {
                 snake.getMutex().unlock();
                 break;
             case 'd':
+            case 'l':
                 snake.getMutex().lock();
                 if (snake.getDx() != -1) {
                     snake.setDx(1);
@@ -74,6 +77,9 @@ void Game::inputHandler(Snake& snake) {
                 }
                 snake.getMutex().unlock();
                 break;
+            case 'x':
+                std::cout << "Player " << snake.getPlayerNum() <<" terminated the game." << std::endl;
+                std::exit(0);
         }
     }
 }
