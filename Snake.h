@@ -2,7 +2,7 @@
 #define SNAKEGAME_SNAKE_H
 
 #include "Grid.h"
-#define WINNING_SIZE 10
+#define WINNING_SIZE 4ss
 
 class Snake {
 private:

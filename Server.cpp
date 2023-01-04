@@ -1,4 +1,4 @@
-
+#include "Server.h"
 #include <stdlib.h>
 #include <string.h>
 
@@ -60,6 +60,7 @@ int server(int argc, char* argv[]) {
     //TODO: vlakno na posielanie dat na clienta - update
     pthread_t thread;
     pthread_create(&thread, NULL, data_writeData, (void *)&data);
+    //TODO: klient na serveri
 
     //TODO: citanie vstupu od klienta - inputHandler
     //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
