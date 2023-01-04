@@ -2,13 +2,13 @@
 <project version="4">
   <component name="PublishConfigData" remoteFilesAllowedToDisappearOnAutoupload="false">
     <serverData>
-      <paths name="POS_2022 (ce7405f3-f38c-4e47-a16c-1c12cdd6175b)">
+      <paths name="Remote Host (68af9196-b9a1-4213-b788-a1fdf4cbdd26)">
         <serverdata>
           <mappings>
-            <mapping deploy="/tmp/tmp.sTvA1VHQt3" local="$PROJECT_DIR$" />
+            <mapping deploy="/tmp/tmp.Mty5tQ8hpx" local="$PROJECT_DIR$" />
           </mappings>
           <excludedPaths>
-            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-domka_version" />
+            <excludedPath local="true" path="$PROJECT_DIR$/cmake-build-debug" />
           </excludedPaths>
         </serverdata>
       </paths>
