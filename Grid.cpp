@@ -65,6 +65,22 @@ int Grid::getHeight() const {
     return height;
 }
 
+const std::string &Grid::getFinalText() const {
+    return final_text;
+}
+
+void Grid::setFinalText(const std::string &finalText) {
+    final_text = finalText;
+}
+
+bool Grid::isGameOver() const {
+    return gameOver;
+}
+
+void Grid::setGameOver(bool gameOver) {
+    Grid::gameOver = gameOver;
+}
+
 
 
 

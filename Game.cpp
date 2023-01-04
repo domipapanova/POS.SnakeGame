@@ -22,8 +22,8 @@ Game::Game(int width, int height, int clientSocket)
 
 // create the players and update threads
 void Game::start() {
-    player1Thread = std::thread(&Game::inputHandler, std::ref(snake1));
-    player2Thread = std::thread(&Game::inputHandler, std::ref(snake2));
+    player1Thread = std::thread(&Game::inputHandler, std::ref(snake1), std::ref(grid));
+    player2Thread = std::thread(&Game::inputHandler, std::ref(snake2), std::ref(grid));
     updateThread = std::thread(&Game::update, std::ref(grid), std::ref(snake1), std::ref(snake2));
 }
 
@@ -47,7 +47,7 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
     }
 }
 
-void Game::inputHandler(Snake& snake) {
+void Game::inputHandler(Snake &snake, Grid &grid) {
     while (true) {
         char c = clientHandler(snake.getPlayerNum(), snake.getSocket());
         switch (c) {

@@ -13,6 +13,7 @@ struct Data {
     std::mutex mutex;
     int socket;
     std::vector<std::vector<Cell>> cells;
+    bool game_over;
 };
 
 int client(int argc, char *argv[]);
