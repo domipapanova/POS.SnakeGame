@@ -1,7 +1,7 @@
 #include "Client.h"
-
-#include <stdlib.h>
-#include <string.h>
+#include "Server.h"
+#include <cstdlib>
+#include <cstring>
 #include <iostream>
 
 #include <sys/socket.h>
@@ -48,11 +48,8 @@ int client(int argc, char *argv[]) {
     data.socket = sock;
 
     //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
-    pthread_t thread;
-    //TODO: wasd - input handler
-    pthread_create(&thread, NULL, data_writeData, (void *)&data);
 
-    //TODO: citanie vektora - vystup z update
+    std::thread clientThread = std::thread(clientInputHandler, std::ref(data)); // mozno (void*) data
     //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
     display(data);
 

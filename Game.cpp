@@ -1,11 +1,20 @@
 #include "Game.h"
+
 #include <thread>
+#include <mutex>
+#include <cstdlib>
+#include <cstring>
+#include <unistd.h>
+#include <iostream>
+
+
 
 // new game with the given dimensions
-Game::Game(int width, int height)
+Game::Game(int width, int height, int clientSocket)
     : grid(width, height), snake1(grid, mutex, width/2, height/3, 1),
       snake2(grid, mutex, width/2, height/3 * 2, 2) {   // snakes spawn in the middle of the grid
     grid.clear();
+    snake2.setSocket(clientSocket);
     snake1.spawnFruit();
     snake2.spawnFruit();
     //grid.draw();
@@ -40,9 +49,7 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
 
 void Game::inputHandler(Snake& snake) {
     while (true) {
-        std::string s;
-        std::cin >> s;
-        char c = s[s.length() - 1];
+        char c = clientHandler(snake.getPlayerNum(), snake.getSocket());
         switch (c) {
             case 'w':
             case 'i':

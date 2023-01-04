@@ -28,9 +28,9 @@ void Grid::clear() {
 }
 
 // draw the grid to the console
-void Grid::draw() {
+std::string Grid::draw() {
     std::lock_guard<std::mutex> lock(mutex);
-
+    std::string screen;
     for (int y = 0; y < height; y++) {
         std::cout << "|"; //hrany neposielame na clienta
 
@@ -38,12 +38,15 @@ void Grid::draw() {
             switch (cells[y][x].cellType) {
                 case CellType::Empty:
                     std::cout << " ";
+                    screen += " ";
                     break;
                 case CellType::Snake:
                     std::cout << "o";
+                    screen += "o";
                     break;
                 case CellType::Fruit:
                     std::cout << "x";
+                    screen += "x";
                     break;
             }
         }
@@ -51,6 +54,7 @@ void Grid::draw() {
         std::cout << std::endl;
     }
     std::cout << "\n\n\n" << std::endl;
+    return screen;
 }
 
 int Grid::getWidth() const {

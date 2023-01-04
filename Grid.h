@@ -29,7 +29,7 @@ public:
 private:
     int width;
     int height;
-    std::mutex mutex;
+    std::mutex mutex; // mozno & by malo byt
 
 public:
     Grid(int width, int height);
