@@ -12,7 +12,7 @@ private:
     int dx;
     int dy;
     int playerNum;
-
+    int socket;
 public:
     Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum);
     void move();
@@ -23,6 +23,8 @@ public:
     void setDy(int dy);
     std::mutex &getMutex() const;
     int getPlayerNum() const;
+    int getSocket() const;
+    void setSocket(int pSocket);
 };
 
 #endif //SNAKEGAME_SNAKE_H

@@ -14,10 +14,11 @@ private:
     std::thread player2Thread;
     std::thread updateThread;
 public:
-    Game(int width, int height);
+    Game(int width, int height, int clientSocket);
     void start();
     void stop();
     static void inputHandler(Snake& snake);
+    static char clientHandler(int playerNum, int socket);
     static void update(Grid& grid, Snake& snake1, Snake& snake2);
 };
 

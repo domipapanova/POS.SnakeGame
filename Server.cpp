@@ -1,12 +1,5 @@
 #include "Server.h"
-#include <stdlib.h>
-#include <string.h>
-
-#include <sys/socket.h>
-#include <arpa/inet.h>
-#include <unistd.h>
-#include <pthread.h>
-#include <iostream>
+#include "Game.h"
 
 
 int server(int argc, char* argv[]) {
@@ -50,28 +43,16 @@ int server(int argc, char* argv[]) {
         printf("Chyba - accept.");
     }
 
-    //inicializacia dat zdielanych medzi vlaknami
-    //TODO: clientovi poslat vektor a prijmat od neho wasd
-    //TODO: struktura na DATA
-    DATA data;
-    data_init(&data, userName, clientSocket);
-
-    //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
-    //TODO: vlakno na posielanie dat na clienta - update
-    pthread_t thread;
-    pthread_create(&thread, NULL, data_writeData, (void *)&data);
-    //TODO: klient na serveri
-
-    //TODO: citanie vstupu od klienta - inputHandler
-    //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
-    data_readData((void *)&data);
-
-    //pockame na skoncenie zapisovacieho vlakna <pthread.h>
-    pthread_join(thread, NULL);
-    data_destroy(&data);
-
-    //uzavretie socketu klienta <unistd.h>
+    play(clientSocket);
     close(clientSocket);
 
     return (EXIT_SUCCESS);
+}
+
+void play(int clientSocket) {
+    srand(time(NULL));
+    Game* game = new Game(GAME_WIDTH, GAME_HEIGHT, clientSocket);
+    game->start();
+    game->stop();
+    delete game;
 }

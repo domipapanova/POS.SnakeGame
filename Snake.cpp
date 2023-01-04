@@ -6,6 +6,7 @@ Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(g
     body.push_back({CellType::Snake, x - 2, y});
     dx = 1;
     dy = 0;
+    socket = 0;
 }
 
 void Snake::move() {
@@ -107,4 +108,12 @@ std::mutex &Snake::getMutex() const {
 
 int Snake::getPlayerNum() const {
     return playerNum;
+}
+
+void Snake::setSocket(int pSocket) {
+    Snake::socket = pSocket;
+}
+
+int Snake::getSocket() const {
+    return socket;
 }

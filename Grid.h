@@ -23,6 +23,10 @@ struct Cell {
 class Grid {
 private:
     std::vector <std::vector<Cell>> cells;
+public:
+
+
+private:
     int width;
     int height;
     std::mutex mutex;
@@ -32,10 +36,12 @@ public:
     Cell& operator()(int x, int y);
     const Cell& operator()(int x, int y) const;
     void clear();
-    void draw();
+    std::string draw();
 
     int getWidth() const;
     int getHeight() const;
+//    std::vector<std::vector<Cell>> &getCells();
+//    int getCellsSize() const;
 };
 
 #endif //SNAKEGAME_GRID_H

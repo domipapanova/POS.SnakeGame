@@ -11,7 +11,7 @@
 #include <pthread.h>
 
 int client(int argc, char *argv[]) {
-    if (argc < 4) {
+    if (argc < 2) {
         printf("Klienta je nutne spustit s nasledujucimi argumentmi: adresa port pouzivatel.");
     }
 
@@ -44,8 +44,8 @@ int client(int argc, char *argv[]) {
     }
 
     //inicializacia dat zdielanych medzi vlaknami
-    DATA data;
-    data_init(&data, userName, sock);
+    Data data;
+    data.socket = sock;
 
     //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
     pthread_t thread;
@@ -54,14 +54,51 @@ int client(int argc, char *argv[]) {
 
     //TODO: citanie vektora - vystup z update
     //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
-    data_readData((void *)&data) ;
+    display(data);
 
     //pockame na skoncenie zapisovacieho vlakna <pthread.h>
-    pthread_join(thread, NULL);
-    data_destroy(&data);
+    clientThread.join();
 
-    //uzavretie socketu <unistd.h>
+    //uzavretie socketu <unistd.h>*/
     close(sock);
 
     return (EXIT_SUCCESS);
 }
+
+void clientInputHandler(Data &data) {
+    char buffer[BUFFER_LENGTH + 1];
+    buffer[BUFFER_LENGTH] = '\0';
+    while(true) {
+        bzero(buffer, BUFFER_LENGTH);
+        fgets(buffer, BUFFER_LENGTH + 1, stdin);
+        data.mutex.lock();
+        write(data.socket, buffer, strlen(buffer) + 1);
+        data.mutex.unlock();
+    }
+}
+
+void display(Data &data) {
+    std::string s;
+    //ak bude vypis zly, treba upravit velkost buffera
+    char buffer[BUFFER_LENGTH + 1];
+    buffer[BUFFER_LENGTH] = '\0';
+    while(true) {
+        bzero(buffer, BUFFER_LENGTH);
+        read(data.socket, buffer, BUFFER_LENGTH);
+        s = buffer;
+
+
+        for (int y = 0; y < GAME_HEIGHT; y++) {
+            std::cout << "|";
+            for (int x = 0; x < GAME_WIDTH; x++) {
+                std::cout << s[y * GAME_WIDTH + x];
+            }
+            std::cout << "|";
+            std::cout << std::endl;
+        }
+        std::cout << "\n\n\n";
+
+
+    }
+}
+

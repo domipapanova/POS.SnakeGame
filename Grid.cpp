@@ -32,7 +32,7 @@ void Grid::draw() {
     std::lock_guard<std::mutex> lock(mutex);
 
     for (int y = 0; y < height; y++) {
-        std::cout << "|";
+        std::cout << "|"; //hrany neposielame na clienta
 
         for (int x = 0; x < width; x++) {
             switch (cells[y][x].cellType) {
@@ -60,3 +60,7 @@ int Grid::getWidth() const {
 int Grid::getHeight() const {
     return height;
 }
+
+
+
+

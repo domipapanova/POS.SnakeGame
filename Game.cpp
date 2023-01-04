@@ -30,7 +30,10 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
     while (true) {
         snake1.move();
         snake2.move();
-        grid.draw();
+        std::string screen = grid.draw();
+//        send(grid, snake2);
+
+        write(snake2.getSocket() ,screen.c_str() , screen.size() + 1); // posielanie obrazovky na klienta
         std::this_thread::sleep_for(std::chrono::milliseconds(3000));
     }
 }
@@ -83,3 +86,27 @@ void Game::inputHandler(Snake& snake) {
         }
     }
 }
+
+
+// vstup WASD od klienta/servera
+char Game::clientHandler(int playerNum, int socket) {
+    char c;
+    std::string s;
+    if (playerNum == 1) {
+        std::cin >> s;
+    } else {
+        //ak nepojde skuste string buffer
+        char buffer[BUFFER_LENGTH + 1];
+        buffer[BUFFER_LENGTH] = '\0';
+        bzero(buffer, BUFFER_LENGTH);
+        read(socket, buffer, BUFFER_LENGTH);
+        s = buffer;
+    }
+    c = s[s.length() - 1]; // posledny char v stringu
+    return c;
+}
+
+//void Game::send( Grid& grid,Snake& snake2) {
+//    std::vector <std::vector<Cell>> cells = grid.getCells();
+//    write(snake2.getSocket() ,&cells , grid.getCellsSize());
+//}
