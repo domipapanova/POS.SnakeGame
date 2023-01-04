@@ -36,15 +36,25 @@ void Game::stop() {
 
 
 void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
+//    std::string final_text = "";
     while (true) {
+
         snake1.move();
         snake2.move();
         std::string screen = grid.draw();
-//        send(grid, snake2);
 
         write(snake2.getSocket() ,screen.c_str() , screen.size() + 1); // posielanie obrazovky na klienta
-        std::this_thread::sleep_for(std::chrono::milliseconds(3000));
+        usleep(1000);
+        write(snake2.getSocket() ,grid.getFinalText().c_str() , grid.getFinalText().size() + 1); // posielanie finalnej spravy na klienta
+
+
+        if(grid.isGameOver()) {
+            std::cout << grid.getFinalText() << std::endl;
+            std::exit(0);
+        }
+        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
+
 }
 
 void Game::inputHandler(Snake &snake, Grid &grid) {
@@ -88,8 +98,19 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 'x':
-                std::cout << "Player " << snake.getPlayerNum() <<" terminated the game." << std::endl;
-                std::exit(0);
+                if (snake.getPlayerNum() == 1) {
+//                    snake.setFinalText("Player 1 terminated the game.");
+                    grid.setFinalText("Player 1 terminated the game.");
+//                    final_text = "Player 1 terminated the game.";
+                } else {
+                    grid.setFinalText("Player 2 terminated the game.");
+//                    snake.setFinalText("Player 2 terminated the game.");
+//                    final_text = "Player 2 terminated the game.";
+                }
+//                std::cout << snake.getFinalText() << std::endl;
+                std::cout << grid.getFinalText() << std::endl;
+//                std::exit(0);
+                grid.setGameOver(true);
         }
     }
 }

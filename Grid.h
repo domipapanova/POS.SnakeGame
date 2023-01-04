@@ -23,13 +23,11 @@ struct Cell {
 class Grid {
 private:
     std::vector <std::vector<Cell>> cells;
-public:
-
-
-private:
     int width;
     int height;
-    std::mutex mutex; // mozno & by malo byt
+    std::mutex mutex; // TODO: spravit z toho &
+    std::string final_text;
+    bool gameOver;
 
 public:
     Grid(int width, int height);
@@ -40,6 +38,10 @@ public:
 
     int getWidth() const;
     int getHeight() const;
+    const std::string &getFinalText() const;
+    void setFinalText(const std::string &finalText);
+    bool isGameOver() const;
+    void setGameOver(bool gameOver);
 //    std::vector<std::vector<Cell>> &getCells();
 //    int getCellsSize() const;
 };

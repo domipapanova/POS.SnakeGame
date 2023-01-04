@@ -2,6 +2,8 @@
 
 Grid::Grid(int width, int height)
     : width(width), height(height) {
+    final_text = "";
+    gameOver = false;
     cells.resize(height);
     for (auto& row : cells) {
         row.resize(width);

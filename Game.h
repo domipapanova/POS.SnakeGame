@@ -15,6 +15,7 @@ private:
     std::thread player1Thread;
     std::thread player2Thread;
     std::thread updateThread;
+
 public:
     Game(int width, int height, int clientSocket);
     void start();

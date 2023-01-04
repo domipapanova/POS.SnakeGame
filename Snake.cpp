@@ -1,6 +1,8 @@
 #include "Snake.h"
+#include <string>
 
-Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum) {
+//TODO: odlisit hadiky
+Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum){
     body.push_back({CellType::Snake, x, y});
     body.push_back({CellType::Snake, x - 1, y});
     body.push_back({CellType::Snake, x - 2, y});
@@ -48,8 +50,12 @@ void Snake::move() {
 
         // check if the player won
         if (body.size() == WINNING_SIZE) {
-            std::cout << "Player " << playerNum << " won!" << std::endl;
-            std::exit(0);
+//            final_text = "Player " + std::to_string(playerNum) + " won!";
+            grid.setFinalText("Player " + std::to_string(playerNum) + " won!");
+            std::cout << grid.getFinalText() << std::endl;
+
+//            std::exit(0);
+            grid.setGameOver(true);
         }
 
         mutex.unlock();
@@ -61,8 +67,17 @@ void Snake::move() {
     // check for collision with snake cells
     if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
         // game over
-        std::cout << "Game Over!" << std::endl;
-        std::exit(0);
+        if (playerNum == 1) {
+//            final_text = "Player 2 won!";
+            grid.setFinalText("Player 2 won!");
+        } else {
+//            final_text = "Player 1 won!";
+            grid.setFinalText("Player 1 won!");
+        }
+
+//        std::cout << grid.getFinalText() << std::endl;
+//        std::exit(0);
+        grid.setGameOver(true);
     }
     // update the grid
     for (auto& cell : body) {
