@@ -25,17 +25,25 @@ private:
     std::vector <std::vector<Cell>> cells;
     int width;
     int height;
-    std::mutex mutex;
+    std::mutex mutex; // TODO: spravit z toho &
+    std::string final_text;
+    bool gameOver;
 
 public:
     Grid(int width, int height);
     Cell& operator()(int x, int y);
     const Cell& operator()(int x, int y) const;
     void clear();
-    void draw();
+    std::string draw();
 
     int getWidth() const;
     int getHeight() const;
+    const std::string &getFinalText() const;
+    void setFinalText(const std::string &finalText);
+    bool isGameOver() const;
+    void setGameOver(bool gameOver);
+//    std::vector<std::vector<Cell>> &getCells();
+//    int getCellsSize() const;
 };
 
 #endif //SNAKEGAME_GRID_H

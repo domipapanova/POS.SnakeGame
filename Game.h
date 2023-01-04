@@ -3,6 +3,8 @@
 
 #include "Grid.h"
 #include "Snake.h"
+#include <thread>
+#define BUFFER_LENGTH 4096
 
 class Game {
 private:
@@ -13,12 +15,15 @@ private:
     std::thread player1Thread;
     std::thread player2Thread;
     std::thread updateThread;
+
 public:
-    Game(int width, int height);
+    Game(int width, int height, int clientSocket);
     void start();
     void stop();
-    static void inputHandler(Snake& snake);
+    static void inputHandler(Snake &snake, Grid &grid);
+    static char clientHandler(int playerNum, int socket);
     static void update(Grid& grid, Snake& snake1, Snake& snake2);
+//    static void send( Grid& grid,Snake& snake2);
 };
 
 
