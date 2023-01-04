@@ -1,6 +1,6 @@
 #include "Snake.h"
 
-Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y): grid(grid), mutex(mutex) {
+Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum) {
     body.push_back({CellType::Snake, x, y});
     body.push_back({CellType::Snake, x - 1, y});
     body.push_back({CellType::Snake, x - 2, y});
@@ -38,24 +38,28 @@ void Snake::move() {
 
     body.insert(body.begin(), {CellType::Snake, newX, newY});
 
-    // Check for collision with fruit
+    // check for collision with fruit
     const Cell newHead = body.front();
-//    bool ateFruit = false;
 
     if (grid(newHead.x, newHead.y).cellType == CellType::Fruit) {
-        // Grow the snake and spawn a new fruit
-//        grid(newHead.x, newHead.y).cellType = CellType::Snake;
-//        ateFruit = true;
+        // grow the snake and spawn a new fruit
         body.push_back(tail);
+
+        // check if the player won
+        if (body.size() == WINNING_SIZE) {
+            std::cout << "Player " << playerNum << " won!" << std::endl;
+            std::exit(0);
+        }
+
         mutex.unlock();
         spawnFruit();
 
     } else {
         mutex.unlock();
     }
-    // Check for collision with snake cells
-    if (grid(newHead.x, newHead.y).cellType == CellType::Snake) { // && !ateFruit) { // || newHead.x == 0 || newHead.x == grid.getWidth() - 1 || newHead.y == 0 || newHead.y == grid.getHeight() - 1) {
-        // Game over
+    // check for collision with snake cells
+    if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
+        // game over
         std::cout << "Game Over!" << std::endl;
         std::exit(0);
     }
@@ -65,14 +69,10 @@ void Snake::move() {
         grid(cell.x, cell.y).cellType = CellType::Snake;
         mutex.unlock();
     }
-//    mutex.unlock();
-
 }
 
+// find a random empty cell to place the fruit
 void Snake::spawnFruit() {
-//    std::unique_lock<std::mutex> lock(mutex);
-    // Find a random empty cell to place the fruit
-
     while (true) {
         int x = rand() % grid.getWidth();
         int y = rand() % grid.getHeight();
@@ -103,4 +103,8 @@ void Snake::setDy(int dy) {
 
 std::mutex &Snake::getMutex() const {
     return mutex;
+}
+
+int Snake::getPlayerNum() const {
+    return playerNum;
 }
