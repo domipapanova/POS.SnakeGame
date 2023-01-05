@@ -8,7 +8,7 @@ int server(int argc, char* argv[]) {
     }
     int port = atoi(argv[1]);
     if (port <= 0) {
-        printf("Port needs to be a whole number larger than 0.");
+        std::cout <<"Port needs to be a whole number larger than 0." << std::endl;
     }
 
     //vytvorenie TCP socketu <sys/socket.h>
@@ -40,7 +40,7 @@ int server(int argc, char* argv[]) {
     //uzavretie pasivneho socketu <unistd.h>
     close(serverSocket);
     if (clientSocket < 0) {
-        printf("Error - accept.");
+        std::cout << "Error - accept." << std::endl;
     }
 
     std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
@@ -56,6 +56,25 @@ int server(int argc, char* argv[]) {
     std::cout << "\n\n\n" <<std::endl;
     sleep(1);
     play(clientSocket);
+    std::cout << "pomocny vypis - koniec play" << std::endl;
+
+    std::cout<<"           /^\\/^\\\n"
+             <<"         _|__|  O|\n"
+             <<"\\/     /~     \\_/ \\\n"
+             <<" \\____|__________/  \\\n"
+             <<"        \\_______      \\\n"
+             <<"                `\\     \\                 \\\n"
+             <<"                  |     |                  \\\n"
+             <<"                 /      /                    \\\n"
+             <<"                /     /                       \\\n"
+             <<"              /      /                         \\ \\\n"
+             <<"             /     /                            \\  \\\n"
+             <<"           /     /             _----_            \\   \\\n"
+             <<"          /     /           _-~      ~-_         |   |\n"
+             <<"        (      (        _-~    _--_    ~-_     _/   |\n"
+             <<"        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
+             <<"          ~-_           _-~          ~-_       _-~\n"
+             <<"            ~--______-~                ~-___-~\n"<<std::endl;
     close(clientSocket);
     std::cout << "pomocny vypis - zavretie socketu" << std::endl;
     return (EXIT_SUCCESS);
@@ -65,7 +84,9 @@ void play(int clientSocket) {
     srand(time(NULL));
     Game* game = new Game(GAME_WIDTH, GAME_HEIGHT, clientSocket);
     game->start();
+    std::cout << "pomocny vypis - koniec start" <<std::endl;
     game->stop();
+    std::cout << "pomocny vypis - play - pred join" <<std::endl;
     delete game;
     std::cout << "pomocny vypis - game zmazana" <<std::endl;
 }

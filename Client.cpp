@@ -66,10 +66,26 @@ int client(int argc, char *argv[]) {
     std::thread clientThread = std::thread(clientInputHandler, std::ref(data)); // mozno (void*) data
     //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
     display(data);
-
+    std::cout << "pomocny vypis - pred join" <<std::endl;
     //pockame na skoncenie zapisovacieho vlakna <pthread.h>
     clientThread.join();
-
+    std::cout<<"           /^\\/^\\\n"
+             <<"         _|__|  O|\n"
+             <<"\\/     /~     \\_/ \\\n"
+             <<" \\____|__________/  \\\n"
+             <<"        \\_______      \\\n"
+             <<"                `\\     \\                 \\\n"
+             <<"                  |     |                  \\\n"
+             <<"                 /      /                    \\\n"
+             <<"                /     /                       \\\n"
+             <<"              /      /                         \\ \\\n"
+             <<"             /     /                            \\  \\\n"
+             <<"           /     /             _----_            \\   \\\n"
+             <<"          /     /           _-~      ~-_         |   |\n"
+             <<"        (      (        _-~    _--_    ~-_     _/   |\n"
+             <<"        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
+             <<"          ~-_           _-~          ~-_       _-~\n"
+             <<"            ~--______-~                ~-___-~\n"<<std::endl;
     //uzavretie socketu <unistd.h>*/
     close(sock);
     return (EXIT_SUCCESS);
@@ -79,7 +95,12 @@ void clientInputHandler(Data &data) {
     char buffer[BUFFER_LENGTH + 1];
     buffer[BUFFER_LENGTH] = '\0';
     while(!data.game_over) {
+        std::cout << "pomocny vypis - zaciatok whilu clientInputHandler" << std::endl;
         bzero(buffer, BUFFER_LENGTH);
+//        if (data.game_over) {
+//            std::cout << "pomocny vypis - break clientInputHandler" << std::endl;
+//            break;
+//        }
         fgets(buffer, BUFFER_LENGTH + 1, stdin);
         data.mutex.lock();
         std::cout << "pomocny vypis - zaciatok write clientInputHandler" << std::endl;
@@ -89,6 +110,7 @@ void clientInputHandler(Data &data) {
         std::cout << "pomocny vypis - koniec mutex clientInputHandler" << std::endl;
 
     }
+    std::cout << "pomocny vypis - koniec clientInputHandler" <<std::endl;
 }
 
 void display(Data &data) {
@@ -120,9 +142,11 @@ void display(Data &data) {
         if(!s.empty()) { //s.rfind("Player", 0) == 0
             std::cout << "pomocny vypis - game over display" << std::endl;
             std::cout << s << std::endl;
+            std::cout << "Press x to end a game :)" << std::endl;
             data.game_over = true;
         }
-
     }
+    std::cout << "pomocny vypis - koniec display" <<std::endl;
+
 }
 

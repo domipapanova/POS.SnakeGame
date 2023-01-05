@@ -29,9 +29,15 @@ void Game::start() {
 
 // stop the players and update threads
 void Game::stop() {
+    std::cout << "pomocny vypis - zaciatok stop" << std::endl;
+    std::cout << "pomocny vypis - vchadzam join player1Thread" << std::endl;
     player1Thread.join();
+    std::cout << "pomocny vypis - vchadzam join player2Thread "<< std::endl;
     player2Thread.join();
+    std::cout << "pomocny vypis - vchadzam join updateThread "<< std::endl;
     updateThread.join();
+    std::cout << "pomocny vypis - koniec stop" << std::endl;
+
 }
 
 
@@ -50,7 +56,9 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
 
         if(grid.isGameOver()) {
             std::cout << grid.getFinalText() << std::endl;
-            std::exit(0);
+            std::cout << "Press x to end a game :)" << std::endl;
+            //std::exit(0);
+            break;
         }
         std::this_thread::sleep_for(std::chrono::milliseconds(1500));
     }
