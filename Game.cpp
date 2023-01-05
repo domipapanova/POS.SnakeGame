@@ -93,7 +93,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 'x':
-                if (grid.isGameOver()) {
                     snake.getMutex().lock();
                     if (snake.getPlayerNum() == 1) {
                         grid.setFinalText("Player 1 terminated the game.");
@@ -103,7 +102,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                     grid.setGameOver(true);
                     snake.getMutex().unlock();
                     break;
-                }
         }
     }
 }
