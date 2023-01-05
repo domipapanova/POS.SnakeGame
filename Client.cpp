@@ -11,29 +11,31 @@
 #include <pthread.h>
 
 int client(int argc, char *argv[]) {
-    //TODO: slovenske vypisy + printf na cout
-    if (argc < 2) {
-        printf("Klienta je nutne spustit s nasledujucimi argumentmi: adresa port pouzivatel.");
+    if (argc < 3) {
+        std::cout << ("You need to initialize the client with the \"address\" and \"port\" arguments.") << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //ziskanie adresy a portu servera <netdb.h>
+    // getting server address and port
     struct hostent *server = gethostbyname(argv[1]);
     if (server == NULL) {
-        printf("Server neexistuje.");
+        std::cout << ("Server does not exist.") << std::endl;
+        return (EXIT_FAILURE);
     }
     int port = atoi(argv[2]);
     if (port <= 0) {
-        printf("Port musi byt cele cislo vacsie ako 0.");
+        std::cout << "Port has to be a whole number larger than 0." << std::endl;
+        return (EXIT_FAILURE);
     }
-    char *userName = argv[3];
 
-    //vytvorenie socketu <sys/socket.h>
+    // creating socket
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        printf("Chyba - socket.");
+        std::cout << "Error - socket." << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //definovanie adresy servera <arpa/inet.h>
+    // definition of the server address
     struct sockaddr_in serverAddress;
     bzero((char *)&serverAddress, sizeof(serverAddress));
     serverAddress.sin_family = AF_INET;
@@ -41,10 +43,11 @@ int client(int argc, char *argv[]) {
     serverAddress.sin_port = htons(port);
 
     if (connect(sock,(struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
-        printf("Chyba - connect.");
+        std::cout << "Error - connect." << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //inicializacia dat zdielanych medzi vlaknami
+    // initialization of data to be sent between threads
     Data data;
     data.socket = sock;
     data.game_over = false;
@@ -62,31 +65,34 @@ int client(int argc, char *argv[]) {
     std::cout << "\n\n\n" <<std::endl;
     sleep(1);
 
-    //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
-    std::thread clientThread = std::thread(clientInputHandler, std::ref(data)); // mozno (void*) data
-    //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
+    // creating thread for writing data to socket
+    std::thread clientThread = std::thread(clientInputHandler, std::ref(data));
+
+    // reading data from socket
     display(data);
-    std::cout << "pomocny vypis - pred join" <<std::endl;
-    //pockame na skoncenie zapisovacieho vlakna <pthread.h>
+
+    // waiting for the writing thread to end
     clientThread.join();
-    std::cout<<"           /^\\/^\\\n"
-             <<"         _|__|  O|\n"
-             <<"\\/     /~     \\_/ \\\n"
-             <<" \\____|__________/  \\\n"
-             <<"        \\_______      \\\n"
-             <<"                `\\     \\                 \\\n"
-             <<"                  |     |                  \\\n"
-             <<"                 /      /                    \\\n"
-             <<"                /     /                       \\\n"
-             <<"              /      /                         \\ \\\n"
-             <<"             /     /                            \\  \\\n"
-             <<"           /     /             _----_            \\   \\\n"
-             <<"          /     /           _-~      ~-_         |   |\n"
-             <<"        (      (        _-~    _--_    ~-_     _/   |\n"
-             <<"        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
-             <<"          ~-_           _-~          ~-_       _-~\n"
-             <<"            ~--______-~                ~-___-~\n"<<std::endl;
-    //uzavretie socketu <unistd.h>*/
+
+    std::cout << "           /^\\/^\\\n"
+             << "         _|__|  O|\n"
+             << "\\/     /~     \\_/ \\\n"
+             << " \\____|__________/  \\\n"
+             << "        \\_______      \\\n"
+             << "                `\\     \\                 \\\n"
+             << "                  |     |                  \\\n"
+             << "                 /      /                    \\\n"
+             << "                /     /                       \\\n"
+             << "              /      /                         \\ \\\n"
+             << "             /     /                            \\  \\\n"
+             << "           /     /             _----_            \\   \\\n"
+             << "          /     /           _-~      ~-_         |   |\n"
+             << "        (      (        _-~    _--_    ~-_     _/   |\n"
+             << "        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
+             << "          ~-_           _-~          ~-_       _-~\n"
+             << "            ~--______-~                ~-___-~\n" << std::endl;
+
+    // closing the socket
     close(sock);
     return (EXIT_SUCCESS);
 }
@@ -95,31 +101,19 @@ void clientInputHandler(Data &data) {
     char buffer[BUFFER_LENGTH + 1];
     buffer[BUFFER_LENGTH] = '\0';
     while(!data.game_over) {
-        std::cout << "pomocny vypis - zaciatok whilu clientInputHandler" << std::endl;
         bzero(buffer, BUFFER_LENGTH);
-//        if (data.game_over) {
-//            std::cout << "pomocny vypis - break clientInputHandler" << std::endl;
-//            break;
-//        }
         fgets(buffer, BUFFER_LENGTH + 1, stdin);
         data.mutex.lock();
-        std::cout << "pomocny vypis - zaciatok write clientInputHandler" << std::endl;
         write(data.socket, buffer, strlen(buffer) + 1);
-        std::cout << "pomocny vypis - koniec write clientInputHandler" << std::endl;
         data.mutex.unlock();
-        std::cout << "pomocny vypis - koniec mutex clientInputHandler" << std::endl;
-
     }
-    std::cout << "pomocny vypis - koniec clientInputHandler" <<std::endl;
 }
 
 void display(Data &data) {
     std::string s;
-    //ak bude vypis zly, treba upravit velkost buffera
     char buffer[BUFFER_LENGTH + 1];
     buffer[BUFFER_LENGTH] = '\0';
     while(!data.game_over) {
-        std::cout << "pomocny vypis - zaciatok whilu display" << std::endl;
         bzero(buffer, BUFFER_LENGTH);
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
@@ -138,15 +132,10 @@ void display(Data &data) {
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
 
-        //TODO: spojit v jeden GAMEOVER
-        if(!s.empty()) { //s.rfind("Player", 0) == 0
-            std::cout << "pomocny vypis - game over display" << std::endl;
+        if(!s.empty()) {
             std::cout << s << std::endl;
-            std::cout << "Press x to end a game :)" << std::endl;
+            std::cout << "Press x to end the game :)" << std::endl;
             data.game_over = true;
         }
     }
-    std::cout << "pomocny vypis - koniec display" <<std::endl;
-
 }
-

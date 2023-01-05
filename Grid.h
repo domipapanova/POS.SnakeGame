@@ -11,7 +11,8 @@
 enum class CellType {
     Empty,
     Snake,
-    Fruit
+    Fruit,
+    Head
 };
 
 struct Cell {
@@ -25,7 +26,7 @@ private:
     std::vector <std::vector<Cell>> cells;
     int width;
     int height;
-    std::mutex &mutex; // TODO: spravit z toho &
+    std::mutex &mutex;
     std::string final_text;
     bool gameOver;
 
@@ -42,8 +43,7 @@ public:
     void setFinalText(const std::string &finalText);
     bool isGameOver() const;
     void setGameOver(bool gameOver);
-//    std::vector<std::vector<Cell>> &getCells();
-//    int getCellsSize() const;
+
 };
 
 #endif //SNAKEGAME_GRID_H

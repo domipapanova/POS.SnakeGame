@@ -1,14 +1,15 @@
-#include "Game.h"
-#include <iostream>
-
 #include "Server.h"
 #include "Client.h"
 
-#include <iostream>
 #include <cstring>
-
+#include <iostream>
 
     int main (int argc, char* argv[]) {
+
+        //TODO: fixnut ukoncenia hry - vediet sa odpojit
+        //TODO: destruktory
+        //TODO: MakeFile
+        //TODO: kontrola memory leakov
         char* newArgv[argc - 1];
         newArgv[0] = argv[0];
 
@@ -26,11 +27,6 @@
             fprintf(stderr, "Wrong arguments\n");
             return 1;
         }
-
-        //TODO: fixnut haky baky - checknut mutexy
-        //TODO: pekny uvodny + koncovy vypis
-        //TODO: vypis startovania hry
-
     }
 
 

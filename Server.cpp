@@ -1,43 +1,43 @@
 #include "Server.h"
 #include "Game.h"
 
-
 int server(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "You need to initialize the server with the \"port\" argument." << std::endl;
     }
     int port = atoi(argv[1]);
     if (port <= 0) {
-        std::cout <<"Port needs to be a whole number larger than 0." << std::endl;
+        std::cout << "Port has to be a whole number larger than 0." << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //vytvorenie TCP socketu <sys/socket.h>
+    // creating TCP socket
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket < 0) {
         std::cout << "Error - socket." << std::endl;
     }
 
-    //definovanie adresy servera <arpa/inet.h>
+    // definition of the server address
     struct sockaddr_in serverAddress;
-    serverAddress.sin_family = AF_INET;         //internetove sockety
-    serverAddress.sin_addr.s_addr = INADDR_ANY; //prijimame spojenia z celeho internetu
-    serverAddress.sin_port = htons(port);       //nastavenie portu
+    serverAddress.sin_family = AF_INET;         // internet sockets
+    serverAddress.sin_addr.s_addr = INADDR_ANY; // accepting connections from the internet
+    serverAddress.sin_port = htons(port);       // setting up the port
 
-    //prepojenie adresy servera so socketom <sys/socket.h>
+    // binding server address with socket
     if (bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
         std::cout << "Error - bind." << std::endl;
     }
 
-    //server bude prijimat nove spojenia cez socket serverSocket <sys/socket.h>
+    // server listens for new connections through the serverSocket
     std::cout << "Waiting for another player ..." << std::endl;
     listen(serverSocket, 10);
 
-    //server caka na pripojenie klienta <sys/socket.h>
+    // server waits for client connection
     struct sockaddr_in clientAddress;
     socklen_t clientAddressLength = sizeof(clientAddress);
     int clientSocket = accept(serverSocket, (struct sockaddr *)&clientAddress, &clientAddressLength);
 
-    //uzavretie pasivneho socketu <unistd.h>
+    // closing passive socket
     close(serverSocket);
     if (clientSocket < 0) {
         std::cout << "Error - accept." << std::endl;
@@ -58,23 +58,23 @@ int server(int argc, char* argv[]) {
     play(clientSocket);
     std::cout << "pomocny vypis - koniec play" << std::endl;
 
-    std::cout<<"           /^\\/^\\\n"
-             <<"         _|__|  O|\n"
-             <<"\\/     /~     \\_/ \\\n"
-             <<" \\____|__________/  \\\n"
-             <<"        \\_______      \\\n"
-             <<"                `\\     \\                 \\\n"
-             <<"                  |     |                  \\\n"
-             <<"                 /      /                    \\\n"
-             <<"                /     /                       \\\n"
-             <<"              /      /                         \\ \\\n"
-             <<"             /     /                            \\  \\\n"
-             <<"           /     /             _----_            \\   \\\n"
-             <<"          /     /           _-~      ~-_         |   |\n"
-             <<"        (      (        _-~    _--_    ~-_     _/   |\n"
-             <<"        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
-             <<"          ~-_           _-~          ~-_       _-~\n"
-             <<"            ~--______-~                ~-___-~\n"<<std::endl;
+    std::cout << "           /^\\/^\\\n"
+             << "         _|__|  O|\n"
+             << "\\/     /~     \\_/ \\\n"
+             << " \\____|__________/  \\\n"
+             << "        \\_______      \\\n"
+             << "                `\\     \\                 \\\n"
+             << "                  |     |                  \\\n"
+             << "                 /      /                    \\\n"
+             << "                /     /                       \\\n"
+             << "              /      /                         \\ \\\n"
+             << "             /     /                            \\  \\\n"
+             << "           /     /             _----_            \\   \\\n"
+             << "          /     /           _-~      ~-_         |   |\n"
+             << "        (      (        _-~    _--_    ~-_     _/   |\n"
+             << "        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
+             << "          ~-_           _-~          ~-_       _-~\n"
+             << "            ~--______-~                ~-___-~\n" << std::endl;
     close(clientSocket);
     std::cout << "pomocny vypis - zavretie socketu" << std::endl;
     return (EXIT_SUCCESS);
