@@ -1,5 +1,3 @@
-
-
 #ifndef SNAKEGAME_CLIENT_H
 #define SNAKEGAME_CLIENT_H
 

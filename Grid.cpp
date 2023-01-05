@@ -1,7 +1,7 @@
 #include "Grid.h"
 
-Grid::Grid(int width, int height)
-    : width(width), height(height) {
+Grid::Grid(int width, int height, std::mutex &mutex)
+    : width(width), height(height), mutex(mutex) {
     final_text = "";
     gameOver = false;
     cells.resize(height);
@@ -10,7 +10,7 @@ Grid::Grid(int width, int height)
     }
 }
 
-// Return the cell at the given position
+// return the cell at the given position
 Cell& Grid::operator()(int x, int y) {
     return cells[y][x];
 }
@@ -34,7 +34,7 @@ std::string Grid::draw() {
     std::lock_guard<std::mutex> lock(mutex);
     std::string screen;
     for (int y = 0; y < height; y++) {
-        std::cout << "|"; //hrany neposielame na clienta
+        std::cout << "|"; // edges are not being sent to the client
 
         for (int x = 0; x < width; x++) {
             switch (cells[y][x].cellType) {
@@ -49,6 +49,10 @@ std::string Grid::draw() {
                 case CellType::Fruit:
                     std::cout << "x";
                     screen += "x";
+                    break;
+                case CellType::Head:
+                    std::cout << "Q";
+                    screen += "Q";
                     break;
             }
         }

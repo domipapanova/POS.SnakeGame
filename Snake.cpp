@@ -3,7 +3,7 @@
 
 //TODO: odlisit hadiky
 Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum){
-    body.push_back({CellType::Snake, x, y});
+    body.push_back({CellType::Head, x, y});
     body.push_back({CellType::Snake, x - 1, y});
     body.push_back({CellType::Snake, x - 2, y});
     dx = 1;
@@ -66,24 +66,39 @@ void Snake::move() {
     }
     // check for collision with snake cells
     if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
-        // game over
+        //TODO: kontrolovat celne zrazky, dlzku hadika a pripadnu remizu
+        mutex.lock();
         if (playerNum == 1) {
-//            final_text = "Player 2 won!";
             grid.setFinalText("Player 2 won!");
         } else {
-//            final_text = "Player 1 won!";
             grid.setFinalText("Player 1 won!");
         }
-
-//        std::cout << grid.getFinalText() << std::endl;
-//        std::exit(0);
         grid.setGameOver(true);
-    }
-    // update the grid
-    for (auto& cell : body) {
-        mutex.lock();
-        grid(cell.x, cell.y).cellType = CellType::Snake;
         mutex.unlock();
+    }
+
+    // check for collision with head
+    if (grid(newHead.x, newHead.y).cellType == CellType::Head) {
+        mutex.lock();
+        grid.setFinalText("It's a Draw!");
+        grid.setGameOver(true);
+        mutex.unlock();
+    }
+
+    // update the grid
+    int i = 0;
+    for (auto& cell : body) {
+        if (i == 0) {
+            mutex.lock();
+            grid(cell.x, cell.y).cellType = CellType::Head;
+            mutex.unlock();
+        } else {
+            mutex.lock();
+            grid(cell.x, cell.y).cellType = CellType::Snake;
+            mutex.unlock();
+        }
+        i++;
+
     }
 }
 

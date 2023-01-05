@@ -11,28 +11,31 @@
 #include <pthread.h>
 
 int client(int argc, char *argv[]) {
-    if (argc < 2) {
-        printf("Klienta je nutne spustit s nasledujucimi argumentmi: adresa port pouzivatel.");
+    if (argc < 3) {
+        std::cout << ("You need to initialize the client with the \"address\" and \"port\" arguments.") << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //ziskanie adresy a portu servera <netdb.h>
+    // getting server address and port
     struct hostent *server = gethostbyname(argv[1]);
     if (server == NULL) {
-        printf("Server neexistuje.");
+        std::cout << ("Server does not exist.") << std::endl;
+        return (EXIT_FAILURE);
     }
     int port = atoi(argv[2]);
     if (port <= 0) {
-        printf("Port musi byt cele cislo vacsie ako 0.");
+        std::cout << "Port has to be a whole number larger than 0." << std::endl;
+        return (EXIT_FAILURE);
     }
-    char *userName = argv[3];
 
-    //vytvorenie socketu <sys/socket.h>
+    // creating socket
     int sock = socket(AF_INET, SOCK_STREAM, 0);
     if (sock < 0) {
-        printf("Chyba - socket.");
+        std::cout << "Error - socket." << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //definovanie adresy servera <arpa/inet.h>
+    // definition of the server address
     struct sockaddr_in serverAddress;
     bzero((char *)&serverAddress, sizeof(serverAddress));
     serverAddress.sin_family = AF_INET;
@@ -40,22 +43,56 @@ int client(int argc, char *argv[]) {
     serverAddress.sin_port = htons(port);
 
     if (connect(sock,(struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
-        printf("Chyba - connect.");
+        std::cout << "Error - connect." << std::endl;
+        return (EXIT_FAILURE);
     }
 
-    //inicializacia dat zdielanych medzi vlaknami
+    // initialization of data to be sent between threads
     Data data;
     data.socket = sock;
     data.game_over = false;
-    //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
-    std::thread clientThread = std::thread(clientInputHandler, std::ref(data)); // mozno (void*) data
-    //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
+
+    std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(2);
+    std::cout << "3" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+    std::cout << "2" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+    std::cout << "1" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+
+    // creating thread for writing data to socket
+    std::thread clientThread = std::thread(clientInputHandler, std::ref(data));
+
+    // reading data from socket
     display(data);
 
-    //pockame na skoncenie zapisovacieho vlakna <pthread.h>
+    // waiting for the writing thread to end
     clientThread.join();
 
-    //uzavretie socketu <unistd.h>*/
+    std::cout << "           /^\\/^\\\n"
+             << "         _|__|  O|\n"
+             << "\\/     /~     \\_/ \\\n"
+             << " \\____|__________/  \\\n"
+             << "        \\_______      \\\n"
+             << "                `\\     \\                 \\\n"
+             << "                  |     |                  \\\n"
+             << "                 /      /                    \\\n"
+             << "                /     /                       \\\n"
+             << "              /      /                         \\ \\\n"
+             << "             /     /                            \\  \\\n"
+             << "           /     /             _----_            \\   \\\n"
+             << "          /     /           _-~      ~-_         |   |\n"
+             << "        (      (        _-~    _--_    ~-_     _/   |\n"
+             << "        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
+             << "          ~-_           _-~          ~-_       _-~\n"
+             << "            ~--______-~                ~-___-~\n" << std::endl;
+
+    // closing the socket
     close(sock);
     return (EXIT_SUCCESS);
 }
@@ -74,11 +111,9 @@ void clientInputHandler(Data &data) {
 
 void display(Data &data) {
     std::string s;
-    //ak bude vypis zly, treba upravit velkost buffera
     char buffer[BUFFER_LENGTH + 1];
     buffer[BUFFER_LENGTH] = '\0';
     while(!data.game_over) {
-
         bzero(buffer, BUFFER_LENGTH);
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
@@ -97,12 +132,10 @@ void display(Data &data) {
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
 
-        //TODO: spojit v jeden GAMEOVER
-        if(!s.empty()) { //s.rfind("Player", 0) == 0
+        if(!s.empty()) {
             std::cout << s << std::endl;
+            std::cout << "Press x to end the game :)" << std::endl;
             data.game_over = true;
         }
-
     }
 }
-
