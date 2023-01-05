@@ -1,7 +1,7 @@
 #include "Grid.h"
 
-Grid::Grid(int width, int height)
-    : width(width), height(height) {
+Grid::Grid(int width, int height, std::mutex &mutex)
+    : width(width), height(height), mutex(mutex) {
     final_text = "";
     gameOver = false;
     cells.resize(height);

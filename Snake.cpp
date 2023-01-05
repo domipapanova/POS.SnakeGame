@@ -66,6 +66,8 @@ void Snake::move() {
     }
     // check for collision with snake cells
     if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
+        //TODO: kontrolovat celne zrazky, dlzku hadika a pripadnu remizu
+        mutex.lock(); //pridane
         // game over
         if (playerNum == 1) {
 //            final_text = "Player 2 won!";
@@ -78,6 +80,7 @@ void Snake::move() {
 //        std::cout << grid.getFinalText() << std::endl;
 //        std::exit(0);
         grid.setGameOver(true);
+        mutex.unlock(); //pridane
     }
     // update the grid
     for (auto& cell : body) {

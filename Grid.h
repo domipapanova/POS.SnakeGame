@@ -25,12 +25,12 @@ private:
     std::vector <std::vector<Cell>> cells;
     int width;
     int height;
-    std::mutex mutex; // TODO: spravit z toho &
+    std::mutex &mutex; // TODO: spravit z toho &
     std::string final_text;
     bool gameOver;
 
 public:
-    Grid(int width, int height);
+    Grid(int width, int height, std::mutex &mutex);
     Cell& operator()(int x, int y);
     const Cell& operator()(int x, int y) const;
     void clear();

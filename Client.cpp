@@ -11,6 +11,7 @@
 #include <pthread.h>
 
 int client(int argc, char *argv[]) {
+    //TODO: slovenske vypisy + printf na cout
     if (argc < 2) {
         printf("Klienta je nutne spustit s nasledujucimi argumentmi: adresa port pouzivatel.");
     }
@@ -47,6 +48,20 @@ int client(int argc, char *argv[]) {
     Data data;
     data.socket = sock;
     data.game_over = false;
+
+    std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(2);
+    std::cout << "3" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+    std::cout << "2" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+    std::cout << "1" << std::endl;
+    std::cout << "\n\n\n" <<std::endl;
+    sleep(1);
+
     //vytvorenie vlakna pre zapisovanie dat do socketu <pthread.h>
     std::thread clientThread = std::thread(clientInputHandler, std::ref(data)); // mozno (void*) data
     //v hlavnom vlakne sa bude vykonavat citanie dat zo socketu
@@ -67,8 +82,12 @@ void clientInputHandler(Data &data) {
         bzero(buffer, BUFFER_LENGTH);
         fgets(buffer, BUFFER_LENGTH + 1, stdin);
         data.mutex.lock();
+        std::cout << "pomocny vypis - zaciatok write clientInputHandler" << std::endl;
         write(data.socket, buffer, strlen(buffer) + 1);
+        std::cout << "pomocny vypis - koniec write clientInputHandler" << std::endl;
         data.mutex.unlock();
+        std::cout << "pomocny vypis - koniec mutex clientInputHandler" << std::endl;
+
     }
 }
 
@@ -78,7 +97,7 @@ void display(Data &data) {
     char buffer[BUFFER_LENGTH + 1];
     buffer[BUFFER_LENGTH] = '\0';
     while(!data.game_over) {
-
+        std::cout << "pomocny vypis - zaciatok whilu display" << std::endl;
         bzero(buffer, BUFFER_LENGTH);
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
@@ -99,6 +118,7 @@ void display(Data &data) {
 
         //TODO: spojit v jeden GAMEOVER
         if(!s.empty()) { //s.rfind("Player", 0) == 0
+            std::cout << "pomocny vypis - game over display" << std::endl;
             std::cout << s << std::endl;
             data.game_over = true;
         }

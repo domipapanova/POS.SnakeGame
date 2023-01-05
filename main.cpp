@@ -29,7 +29,6 @@
 
         //TODO: fixnut haky baky - checknut mutexy
         //TODO: pekny uvodny + koncovy vypis
-        //TODO: vypis cakania na klienta
         //TODO: vypis startovania hry
 
     }

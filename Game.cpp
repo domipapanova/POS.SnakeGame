@@ -11,7 +11,7 @@
 
 // new game with the given dimensions
 Game::Game(int width, int height, int clientSocket)
-    : grid(width, height), snake1(grid, mutex, width/2, height/3, 1),
+    : grid(width, height, mutex), snake1(grid, mutex, width/2, height/3, 1),
       snake2(grid, mutex, width/2, height/3 * 2, 2) {   // snakes spawn in the middle of the grid
     grid.clear();
     snake2.setSocket(clientSocket);
@@ -58,7 +58,7 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
 }
 
 void Game::inputHandler(Snake &snake, Grid &grid) {
-    while (true) {
+    while (!grid.isGameOver()) {
         char c = clientHandler(snake.getPlayerNum(), snake.getSocket());
         switch (c) {
             case 'w':
@@ -98,19 +98,27 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 'x':
-                if (snake.getPlayerNum() == 1) {
+                if (grid.isGameOver()) {
+                    snake.getMutex().lock();
+                    if (snake.getPlayerNum() == 1) {
 //                    snake.setFinalText("Player 1 terminated the game.");
-                    grid.setFinalText("Player 1 terminated the game.");
+                        grid.setFinalText("Player 1 terminated the game.");
 //                    final_text = "Player 1 terminated the game.";
-                } else {
-                    grid.setFinalText("Player 2 terminated the game.");
+                    } else {
+                        grid.setFinalText("Player 2 terminated the game.");
 //                    snake.setFinalText("Player 2 terminated the game.");
 //                    final_text = "Player 2 terminated the game.";
-                }
+                    }
 //                std::cout << snake.getFinalText() << std::endl;
-                std::cout << grid.getFinalText() << std::endl;
+                    //std::cout << grid.getFinalText() << std::endl;
+                    // std::cout << "Press x to end a game :)" << std::endl;
 //                std::exit(0);
-                grid.setGameOver(true);
+
+                    grid.setGameOver(true);
+                    snake.getMutex().unlock();
+                }
+
+                break;
         }
     }
 }
