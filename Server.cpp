@@ -4,6 +4,7 @@
 int server(int argc, char* argv[]) {
     if (argc < 2) {
         std::cout << "You need to initialize the server with the \"port\" argument." << std::endl;
+        return (EXIT_FAILURE);
     }
     int port = atoi(argv[1]);
     if (port <= 0) {
@@ -15,6 +16,7 @@ int server(int argc, char* argv[]) {
     int serverSocket = socket(AF_INET, SOCK_STREAM, 0);
     if (serverSocket < 0) {
         std::cout << "Error - socket." << std::endl;
+        return (EXIT_FAILURE);
     }
 
     // definition of the server address
@@ -26,6 +28,7 @@ int server(int argc, char* argv[]) {
     // binding server address with socket
     if (bind(serverSocket, (struct sockaddr *)&serverAddress, sizeof(serverAddress)) < 0) {
         std::cout << "Error - bind." << std::endl;
+        return (EXIT_FAILURE);
     }
 
     // server listens for new connections through the serverSocket
@@ -41,6 +44,8 @@ int server(int argc, char* argv[]) {
     close(serverSocket);
     if (clientSocket < 0) {
         std::cout << "Error - accept." << std::endl;
+        return (EXIT_FAILURE);
+
     }
 
     std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
@@ -56,7 +61,6 @@ int server(int argc, char* argv[]) {
     std::cout << "\n\n\n" <<std::endl;
     sleep(1);
     play(clientSocket);
-    std::cout << "pomocny vypis - koniec play" << std::endl;
 
     std::cout << "           /^\\/^\\\n"
              << "         _|__|  O|\n"
@@ -76,7 +80,6 @@ int server(int argc, char* argv[]) {
              << "          ~-_           _-~          ~-_       _-~\n"
              << "            ~--______-~                ~-___-~\n" << std::endl;
     close(clientSocket);
-    std::cout << "pomocny vypis - zavretie socketu" << std::endl;
     return (EXIT_SUCCESS);
 }
 
@@ -84,9 +87,6 @@ void play(int clientSocket) {
     srand(time(NULL));
     Game* game = new Game(GAME_WIDTH, GAME_HEIGHT, clientSocket);
     game->start();
-    std::cout << "pomocny vypis - koniec start" <<std::endl;
     game->stop();
-    std::cout << "pomocny vypis - play - pred join" <<std::endl;
     delete game;
-    std::cout << "pomocny vypis - game zmazana" <<std::endl;
 }

@@ -29,14 +29,9 @@ void Game::start() {
 
 // stop the players and update threads
 void Game::stop() {
-    std::cout << "pomocny vypis - zaciatok stop" << std::endl;
-    std::cout << "pomocny vypis - vchadzam join player1Thread" << std::endl;
     player1Thread.join();
-    std::cout << "pomocny vypis - vchadzam join player2Thread "<< std::endl;
     player2Thread.join();
-    std::cout << "pomocny vypis - vchadzam join updateThread "<< std::endl;
     updateThread.join();
-    std::cout << "pomocny vypis - koniec stop" << std::endl;
 
 }
 

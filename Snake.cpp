@@ -86,10 +86,19 @@ void Snake::move() {
     }
 
     // update the grid
+    int i = 0;
     for (auto& cell : body) {
-        mutex.lock();
-        grid(cell.x, cell.y).cellType = CellType::Snake;
-        mutex.unlock();
+        if (i == 0) {
+            mutex.lock();
+            grid(cell.x, cell.y).cellType = CellType::Head;
+            mutex.unlock();
+        } else {
+            mutex.lock();
+            grid(cell.x, cell.y).cellType = CellType::Snake;
+            mutex.unlock();
+        }
+        i++;
+
     }
 }
 
