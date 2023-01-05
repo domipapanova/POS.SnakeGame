@@ -10,9 +10,10 @@
 #include <iostream>
 
 #include "Grid.h"
+#include "Output.h"
 
-#define GAME_WIDTH 12
-#define GAME_HEIGHT 8
+#define GAME_WIDTH 30
+#define GAME_HEIGHT 15
 
 #ifndef SNAKEGAME_SERVER_H
 #define SNAKEGAME_SERVER_H

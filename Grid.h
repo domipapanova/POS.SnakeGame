@@ -32,6 +32,8 @@ private:
 
 public:
     Grid(int width, int height, std::mutex &mutex);
+    ~Grid();
+
     Cell& operator()(int x, int y);
     const Cell& operator()(int x, int y) const;
     void clear();

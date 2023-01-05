@@ -6,6 +6,7 @@
 
 #include "Grid.h"
 #include "Game.h"
+#include "Output.h"
 
 struct Data {
     std::mutex mutex;

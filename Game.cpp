@@ -2,12 +2,9 @@
 
 #include <thread>
 #include <mutex>
-#include <cstdlib>
 #include <cstring>
 #include <unistd.h>
 #include <iostream>
-
-
 
 // new game with the given dimensions
 Game::Game(int width, int height, int clientSocket)
@@ -19,6 +16,8 @@ Game::Game(int width, int height, int clientSocket)
     snake2.spawnFruit();
     //grid.draw();
 }
+
+Game::~Game() = default;
 
 // create the players and update threads
 void Game::start() {
@@ -62,7 +61,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
         char c = clientHandler(snake.getPlayerNum(), snake.getSocket());
         switch (c) {
             case 'w':
-            case 'i':
                 snake.getMutex().lock();
                 if (snake.getDy() != 1) {
                     snake.setDx(0);
@@ -71,7 +69,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 'a':
-            case 'j':
                 snake.getMutex().lock();
                 if (snake.getDx() != 1) {
                     snake.setDx(-1);
@@ -80,7 +77,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 's':
-            case 'k':
                 snake.getMutex().lock();
                 if (snake.getDy() != -1) {
                     snake.setDx(0);
@@ -89,7 +85,6 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                 snake.getMutex().unlock();
                 break;
             case 'd':
-            case 'l':
                 snake.getMutex().lock();
                 if (snake.getDx() != -1) {
                     snake.setDx(1);
@@ -104,15 +99,14 @@ void Game::inputHandler(Snake &snake, Grid &grid) {
                         grid.setFinalText("Player 1 terminated the game.");
                     } else {
                         grid.setFinalText("Player 2 terminated the game.");
-                        grid.setGameOver(true);
-                        snake.getMutex().unlock();
                     }
+                    grid.setGameOver(true);
+                    snake.getMutex().unlock();
                     break;
                 }
         }
     }
 }
-
 
 // WASD input from client/server
 char Game::clientHandler(int playerNum, int socket) {

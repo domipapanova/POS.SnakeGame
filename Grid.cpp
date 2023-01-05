@@ -10,6 +10,14 @@ Grid::Grid(int width, int height, std::mutex &mutex)
     }
 }
 
+Grid::~Grid() {
+    width = 0;
+    height = 0;
+    final_text = "";
+    // mozno vektory
+}
+
+
 // return the cell at the given position
 Cell& Grid::operator()(int x, int y) {
     return cells[y][x];
@@ -86,6 +94,7 @@ bool Grid::isGameOver() const {
 void Grid::setGameOver(bool gameOver) {
     Grid::gameOver = gameOver;
 }
+
 
 
 

@@ -6,8 +6,6 @@
 
     int main (int argc, char* argv[]) {
 
-        //TODO: fixnut ukoncenia hry - vediet sa odpojit
-        //TODO: destruktory
         //TODO: MakeFile
         //TODO: kontrola memory leakov
         char* newArgv[argc - 1];

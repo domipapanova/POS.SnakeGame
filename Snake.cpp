@@ -1,12 +1,18 @@
 #include "Snake.h"
 #include <string>
 
-//TODO: odlisit hadiky
 Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum){
     body.push_back({CellType::Head, x, y});
     body.push_back({CellType::Snake, x - 1, y});
     body.push_back({CellType::Snake, x - 2, y});
     dx = 1;
+    dy = 0;
+    socket = 0;
+}
+
+Snake::~Snake() {
+    playerNum = 0;
+    dx = 0;
     dy = 0;
     socket = 0;
 }
@@ -66,7 +72,6 @@ void Snake::move() {
     }
     // check for collision with snake cells
     if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
-        //TODO: kontrolovat celne zrazky, dlzku hadika a pripadnu remizu
         mutex.lock();
         if (playerNum == 1) {
             grid.setFinalText("Player 2 won!");

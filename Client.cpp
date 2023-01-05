@@ -52,18 +52,7 @@ int client(int argc, char *argv[]) {
     data.socket = sock;
     data.game_over = false;
 
-    std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(2);
-    std::cout << "3" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
-    std::cout << "2" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
-    std::cout << "1" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
+    outputStart();
 
     // creating thread for writing data to socket
     std::thread clientThread = std::thread(clientInputHandler, std::ref(data));
@@ -74,28 +63,14 @@ int client(int argc, char *argv[]) {
     // waiting for the writing thread to end
     clientThread.join();
 
-    std::cout << "           /^\\/^\\\n"
-             << "         _|__|  O|\n"
-             << "\\/     /~     \\_/ \\\n"
-             << " \\____|__________/  \\\n"
-             << "        \\_______      \\\n"
-             << "                `\\     \\                 \\\n"
-             << "                  |     |                  \\\n"
-             << "                 /      /                    \\\n"
-             << "                /     /                       \\\n"
-             << "              /      /                         \\ \\\n"
-             << "             /     /                            \\  \\\n"
-             << "           /     /             _----_            \\   \\\n"
-             << "          /     /           _-~      ~-_         |   |\n"
-             << "        (      (        _-~    _--_    ~-_     _/   |\n"
-             << "        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
-             << "          ~-_           _-~          ~-_       _-~\n"
-             << "            ~--______-~                ~-___-~\n" << std::endl;
+    outputEnd();
 
     // closing the socket
     close(sock);
     return (EXIT_SUCCESS);
 }
+
+
 
 void clientInputHandler(Data &data) {
     char buffer[BUFFER_LENGTH + 1];
