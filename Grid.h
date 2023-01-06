@@ -8,6 +8,8 @@
 #include <mutex>
 #include <cstdio>
 
+#include "Consts.h"
+
 enum class CellType {
     Empty,
     Snake,
@@ -32,6 +34,8 @@ private:
 
 public:
     Grid(int width, int height, std::mutex &mutex);
+    ~Grid();
+
     Cell& operator()(int x, int y);
     const Cell& operator()(int x, int y) const;
     void clear();

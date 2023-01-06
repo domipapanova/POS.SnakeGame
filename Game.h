@@ -4,7 +4,7 @@
 #include "Grid.h"
 #include "Snake.h"
 #include <thread>
-#define BUFFER_LENGTH 4096
+#include "Consts.h"
 
 class Game {
 private:
@@ -18,6 +18,8 @@ private:
 
 public:
     Game(int width, int height, int clientSocket);
+    ~Game();
+
     void start();
     void stop();
     static void inputHandler(Snake &snake, Grid &grid);

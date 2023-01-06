@@ -1,1 +1,0 @@
-/usr/bin/c++ -g CMakeFiles/SnakeGame.dir/main.cpp.o CMakeFiles/SnakeGame.dir/server.cpp.o CMakeFiles/SnakeGame.dir/client.cpp.o -o SnakeGame  -lpthread 

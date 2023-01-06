@@ -1,5 +1,4 @@
 #include "Server.h"
-#include "Game.h"
 
 int server(int argc, char* argv[]) {
     if (argc < 2) {
@@ -48,37 +47,11 @@ int server(int argc, char* argv[]) {
 
     }
 
-    std::cout <<"  $$$$$$\\                      $$\\                 \n $$  __$$\\                     $$ |\n $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \n \\$$$$$$\\  $$  __$$\\  \\____$$\\ $$ | $$  |$$  __$$\\ \n  \\____$$\\ $$ |  $$ | $$$$$$$ |$$$$$$  / $$$$$$$$ |\n $$\\   $$ |$$ |  $$ |$$  __$$ |$$  _$$<  $$   ____|\n \\$$$$$$  |$$ |  $$ |\\$$$$$$$ |$$ | \\$$\\ \\$$$$$$$\\ \n  \\______/ \\__|  \\__| \\_______|\\__|  \\__| \\_______|" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(2);
-    std::cout << "3" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
-    std::cout << "2" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
-    std::cout << "1" << std::endl;
-    std::cout << "\n\n\n" <<std::endl;
-    sleep(1);
+    outputStart();
+
     play(clientSocket);
 
-    std::cout << "           /^\\/^\\\n"
-             << "         _|__|  O|\n"
-             << "\\/     /~     \\_/ \\\n"
-             << " \\____|__________/  \\\n"
-             << "        \\_______      \\\n"
-             << "                `\\     \\                 \\\n"
-             << "                  |     |                  \\\n"
-             << "                 /      /                    \\\n"
-             << "                /     /                       \\\n"
-             << "              /      /                         \\ \\\n"
-             << "             /     /                            \\  \\\n"
-             << "           /     /             _----_            \\   \\\n"
-             << "          /     /           _-~      ~-_         |   |\n"
-             << "        (      (        _-~    _--_    ~-_     _/   |\n"
-             << "        \\      ~-____-~    _-~    ~-_    ~-_-~    /\n"
-             << "          ~-_           _-~          ~-_       _-~\n"
-             << "            ~--______-~                ~-___-~\n" << std::endl;
+    outputEnd();
     close(clientSocket);
     return (EXIT_SUCCESS);
 }

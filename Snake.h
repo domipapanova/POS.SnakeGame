@@ -2,7 +2,7 @@
 #define SNAKEGAME_SNAKE_H
 
 #include "Grid.h"
-#define WINNING_SIZE 15
+#include "Consts.h"
 
 class Snake {
 private:
@@ -16,6 +16,8 @@ private:
 
 public:
     Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum);
+    ~Snake();
+
     void move();
     void spawnFruit();
     int getDx() const;
