@@ -59,8 +59,8 @@ std::string Grid::draw() {
                     screen += "x";
                     break;
                 case CellType::Head:
-                    std::cout << "Q";
-                    screen += "Q";
+                    std::cout << "O";
+                    screen += "O";
                     break;
             }
         }

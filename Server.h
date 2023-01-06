@@ -9,11 +9,10 @@
 #include <pthread.h>
 #include <iostream>
 
-#include "Grid.h"
+//#include "Grid.h"
 #include "Output.h"
-
-#define GAME_WIDTH 30
-#define GAME_HEIGHT 15
+#include "Consts.h"
+#include "Game.h"
 
 #ifndef SNAKEGAME_SERVER_H
 #define SNAKEGAME_SERVER_H

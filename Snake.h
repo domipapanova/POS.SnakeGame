@@ -2,7 +2,7 @@
 #define SNAKEGAME_SNAKE_H
 
 #include "Grid.h"
-#define WINNING_SIZE 20
+#include "Consts.h"
 
 class Snake {
 private:

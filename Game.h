@@ -4,7 +4,7 @@
 #include "Grid.h"
 #include "Snake.h"
 #include <thread>
-#define BUFFER_LENGTH 4096
+#include "Consts.h"
 
 class Game {
 private:

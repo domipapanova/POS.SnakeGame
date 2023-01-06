@@ -2,11 +2,9 @@
 #define SNAKEGAME_CLIENT_H
 
 #include <mutex>
-#include <vector>
 
-#include "Grid.h"
-#include "Game.h"
 #include "Output.h"
+#include "Consts.h"
 
 struct Data {
     std::mutex mutex;

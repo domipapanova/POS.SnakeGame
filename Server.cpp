@@ -1,5 +1,4 @@
 #include "Server.h"
-#include "Game.h"
 
 int server(int argc, char* argv[]) {
     if (argc < 2) {
