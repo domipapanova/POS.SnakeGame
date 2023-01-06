@@ -8,6 +8,8 @@
 #include <mutex>
 #include <cstdio>
 
+#include "Consts.h"
+
 enum class CellType {
     Empty,
     Snake,

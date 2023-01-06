@@ -42,7 +42,7 @@ std::string Grid::draw() {
     std::lock_guard<std::mutex> lock(mutex);
     std::string screen;
     for (int y = 0; y < height; y++) {
-        std::cout << "|"; // edges are not being sent to the client
+        std::cout << BLUE_LINE; // edges are not being sent to the client
 
         for (int x = 0; x < width; x++) {
             switch (cells[y][x].cellType) {
@@ -51,20 +51,20 @@ std::string Grid::draw() {
                     screen += " ";
                     break;
                 case CellType::Snake:
-                    std::cout << "o";
+                    std::cout << GREEN_o;
                     screen += "o";
                     break;
                 case CellType::Fruit:
-                    std::cout << "x";
+                    std::cout << RED_x;
                     screen += "x";
                     break;
                 case CellType::Head:
-                    std::cout << "O";
+                    std::cout << GREEN_O;
                     screen += "O";
                     break;
             }
         }
-        std::cout << "|";
+        std::cout << BLUE_LINE;
         std::cout << std::endl;
     }
     std::cout << "\n\n\n" << std::endl;

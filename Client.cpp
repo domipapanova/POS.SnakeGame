@@ -93,11 +93,20 @@ void display(Data &data) {
         read(data.socket, buffer, BUFFER_LENGTH);
         s = buffer;
         for (int y = 0; y < GAME_HEIGHT; y++) {
-            std::cout << "|";
+            std::cout << BLUE_LINE;
             for (int x = 0; x < GAME_WIDTH; x++) {
-                std::cout << s[y * GAME_WIDTH + x];
+                char out = s[y * GAME_WIDTH + x];
+                if (out == 'o') {
+                    std::cout << GREEN_o;
+                } else if (out == 'O') {
+                    std::cout << GREEN_O;
+                } else if (out == 'x') {
+                    std::cout << RED_x;
+                } else {
+                    std::cout << out;
+                }
             }
-            std::cout << "|";
+            std::cout << BLUE_LINE;
             std::cout << std::endl;
         }
         std::cout << "\n\n\n";
