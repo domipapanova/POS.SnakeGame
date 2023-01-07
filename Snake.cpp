@@ -2,9 +2,16 @@
 #include <string>
 
 Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum){
-    body.push_back({CellType::Head, x, y});
-    body.push_back({CellType::Snake, x - 1, y});
-    body.push_back({CellType::Snake, x - 2, y});
+    if(playerNum==1) {
+        cellTypeHead = CellType::Head1;
+        cellTypeSnake = CellType::Snake1;
+    } else {
+        cellTypeHead = CellType::Head2;
+        cellTypeSnake = CellType::Snake2;
+    }
+    body.push_back({ cellTypeHead, x, y});
+    body.push_back({cellTypeSnake, x - 1, y});
+    body.push_back({cellTypeSnake, x - 2, y});
     dx = 1;
     dy = 0;
     socket = 0;
