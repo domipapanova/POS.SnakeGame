@@ -47,8 +47,7 @@ int server(int argc, char* argv[]) {
 
     }
 
-    outputStart();
-
+    outputStart(1);
     play(clientSocket);
 
     outputEnd();

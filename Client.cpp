@@ -52,7 +52,7 @@ int client(int argc, char *argv[]) {
     data.socket = sock;
     data.game_over = false;
 
-    outputStart();
+    outputStart(2);
 
     // creating thread for writing data to socket
     std::thread clientThread = std::thread(clientInputHandler, std::ref(data));

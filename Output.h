@@ -6,7 +6,7 @@
 #include <unistd.h>
 #include <iostream>
 
-void outputStart();
+void outputStart(int playerNum);
 void outputEnd();
 
 #endif //SNAKEGAME_OUTPUT_H

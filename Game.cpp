@@ -42,7 +42,7 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
         std::string screen = grid.draw();
 
         write(snake2.getSocket() ,screen.c_str() , screen.size() + 1); // sending screen to client
-        usleep(1000);
+        usleep(3000);
         write(snake2.getSocket() ,grid.getFinalText().c_str() , grid.getFinalText().size() + 1); // sending final message to client
 
 
@@ -51,7 +51,7 @@ void Game::update(Grid& grid, Snake& snake1, Snake& snake2) {
             std::cout << "Press x to end the game :)" << std::endl;
             break;
         }
-        std::this_thread::sleep_for(std::chrono::milliseconds(1500));
+        std::this_thread::sleep_for(std::chrono::milliseconds(1000));
     }
 
 }
