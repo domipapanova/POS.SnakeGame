@@ -25,12 +25,10 @@ Snake::~Snake() {
 }
 
 void Snake::move() {
-//    std::lock_guard<std::mutex> lock(mutex);
     // Remove the tail of the snake
     auto& tail = body.back();
     mutex.lock();
     grid(tail.x, tail.y).cellType = CellType::Empty;
-
     body.pop_back();
 
     // Add a new cell to the head of the snake in the direction it is moving
@@ -63,14 +61,11 @@ void Snake::move() {
 
         // check if the player won
         if (body.size() == WINNING_SIZE) {
-//            final_text = "Player " + std::to_string(playerNum) + " won!";
             grid.setFinalText("Player " + std::to_string(playerNum) + " won!");
             std::cout << grid.getFinalText() << std::endl;
 
-//            std::exit(0);
             grid.setGameOver(true);
         }
-
         mutex.unlock();
         spawnFruit();
 

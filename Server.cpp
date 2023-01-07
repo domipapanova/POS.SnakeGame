@@ -44,13 +44,12 @@ int server(int argc, char* argv[]) {
     if (clientSocket < 0) {
         std::cout << "Error - accept." << std::endl;
         return (EXIT_FAILURE);
-
     }
 
     outputStart(1);
     play(clientSocket);
-
     outputEnd();
+
     close(clientSocket);
     return (EXIT_SUCCESS);
 }

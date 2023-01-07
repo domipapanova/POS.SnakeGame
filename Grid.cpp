@@ -14,7 +14,6 @@ Grid::~Grid() {
     width = 0;
     height = 0;
     final_text = "";
-    // mozno vektory
 }
 
 

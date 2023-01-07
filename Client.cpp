@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <pthread.h>
 
 int client(int argc, char *argv[]) {
     if (argc < 3) {
@@ -69,8 +68,6 @@ int client(int argc, char *argv[]) {
     close(sock);
     return (EXIT_SUCCESS);
 }
-
-
 
 void clientInputHandler(Data &data) {
     char buffer[BUFFER_LENGTH + 1];

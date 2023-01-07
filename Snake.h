@@ -9,7 +9,6 @@ private:
     std::vector<Cell> body;
     Grid &grid;
     std::mutex &mutex;
-
     int dx;
     int dy;
     int playerNum;
