@@ -45,7 +45,7 @@ void Snake::move() {
         newY -= grid.getHeight();
     }
 
-    body.insert(body.begin(), {CellType::Snake, newX, newY});
+    body.insert(body.begin(), {getCellTypeHead(), newX, newY});
 
     // check for collision with fruit
     const Cell newHead = body.front();
@@ -71,7 +71,7 @@ void Snake::move() {
         mutex.unlock();
     }
     // check for collision with snake cells
-    if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
+    if (grid(newHead.x, newHead.y).cellType == CellType::Snake1 || grid(newHead.x, newHead.y).cellType == CellType::Snake2) {
         mutex.lock();
         if (playerNum == 1) {
             grid.setFinalText("Player 2 won!");
@@ -83,7 +83,7 @@ void Snake::move() {
     }
 
     // check for collision with head
-    if (grid(newHead.x, newHead.y).cellType == CellType::Head) {
+    if (grid(newHead.x, newHead.y).cellType == CellType::Head1 || grid(newHead.x, newHead.y).cellType == CellType::Head2) {
         mutex.lock();
         grid.setFinalText("It's a Draw!");
         grid.setGameOver(true);
@@ -95,11 +95,11 @@ void Snake::move() {
     for (auto& cell : body) {
         if (i == 0) {
             mutex.lock();
-            grid(cell.x, cell.y).cellType = CellType::Head;
+            grid(cell.x, cell.y).cellType = getCellTypeHead();
             mutex.unlock();
         } else {
             mutex.lock();
-            grid(cell.x, cell.y).cellType = CellType::Snake;
+            grid(cell.x, cell.y).cellType = getCellTypeSnake();
             mutex.unlock();
         }
         i++;
@@ -151,4 +151,12 @@ void Snake::setSocket(int pSocket) {
 
 int Snake::getSocket() const {
     return socket;
+}
+
+CellType Snake::getCellTypeHead() const {
+    return cellTypeHead;
+}
+
+CellType Snake::getCellTypeSnake() const {
+    return cellTypeSnake;
 }

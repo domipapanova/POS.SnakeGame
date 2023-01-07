@@ -96,14 +96,25 @@ void display(Data &data) {
             std::cout << BLUE_LINE;
             for (int x = 0; x < GAME_WIDTH; x++) {
                 char out = s[y * GAME_WIDTH + x];
-                if (out == 'o') {
-                    std::cout << GREEN_o;
-                } else if (out == 'O') {
-                    std::cout << GREEN_O;
-                } else if (out == 'x') {
-                    std::cout << RED_x;
-                } else {
-                    std::cout << out;
+                switch (out) {
+                    case ' ':
+                        std::cout << " ";
+                        break;
+                    case 'o':
+                        std::cout << GREEN_o;
+                        break;
+                    case 's':
+                        std::cout << YELLOW_o;
+                        break;
+                    case 'x':
+                        std::cout << RED_x;
+                        break;
+                    case 'O':
+                        std::cout << GREEN_O;
+                        break;
+                    case 'S':
+                        std::cout << YELLOW_O;
+                        break;
                 }
             }
             std::cout << BLUE_LINE;
