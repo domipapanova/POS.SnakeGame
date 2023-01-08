@@ -12,9 +12,11 @@
 
 enum class CellType {
     Empty,
-    Snake,
+    Snake1,
+    Snake2,
     Fruit,
-    Head
+    Head1,
+    Head2
 };
 
 struct Cell {

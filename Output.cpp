@@ -1,6 +1,6 @@
 #include "Output.h"
 
-void outputStart() {
+void outputStart(int playerNum) {
     std::cout << "\033[1;32m  $$$$$$\\                      $$\\                 \033[0m\n" <<
               "\033[1;32m $$  __$$\\                     $$ |\033[0m\n" <<
               "\033[1;32m $$ /  \\__|$$$$$$$\\   $$$$$$\\  $$ |  $$\\  $$$$$$\\  \033[0m\n" <<
@@ -13,6 +13,12 @@ void outputStart() {
 
     std::cout << "\n\n" <<std::endl;
     std::cout << "\033[1;34mControl your snake with WASD\nPress X to terminate the game.\n\nFirst to reach 20 cells wins!\033[0m" << std::endl;
+    if (playerNum == 1 ) {
+        std::cout << "\033[1;32mYou are playing as Player \033[0m" << "\033[1;32m1\033[0m" << std::endl;
+    } else {
+        std::cout << "\033[1;33mYou are playing as Player \033[0m" << "\033[1;33m2\033[0m" << std::endl;
+    }
+
     sleep(3);
     std::cout << "\n\n" <<std::endl;
     std::cout << "\033[1;31m    ____                 __     \033[0m\n" <<

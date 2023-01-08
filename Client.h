@@ -2,14 +2,12 @@
 #define SNAKEGAME_CLIENT_H
 
 #include <mutex>
-
 #include "Output.h"
 #include "Consts.h"
 
 struct Data {
     std::mutex mutex;
     int socket;
-//    std::vector<std::vector<Cell>> cells;
     bool game_over;
 };
 

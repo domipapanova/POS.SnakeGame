@@ -13,6 +13,8 @@ private:
     int dy;
     int playerNum;
     int socket;
+    CellType cellTypeHead;
+    CellType cellTypeSnake;
 
 public:
     Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum);
@@ -28,6 +30,8 @@ public:
     int getPlayerNum() const;
     int getSocket() const;
     void setSocket(int pSocket);
+    CellType getCellTypeHead() const;
+    CellType getCellTypeSnake() const;
 };
 
 #endif //SNAKEGAME_SNAKE_H

@@ -8,7 +8,6 @@
 #include <arpa/inet.h>
 #include <netdb.h>
 #include <unistd.h>
-#include <pthread.h>
 
 int client(int argc, char *argv[]) {
     if (argc < 3) {
@@ -52,7 +51,7 @@ int client(int argc, char *argv[]) {
     data.socket = sock;
     data.game_over = false;
 
-    outputStart();
+    outputStart(2);
 
     // creating thread for writing data to socket
     std::thread clientThread = std::thread(clientInputHandler, std::ref(data));
@@ -69,8 +68,6 @@ int client(int argc, char *argv[]) {
     close(sock);
     return (EXIT_SUCCESS);
 }
-
-
 
 void clientInputHandler(Data &data) {
     char buffer[BUFFER_LENGTH + 1];
@@ -96,14 +93,25 @@ void display(Data &data) {
             std::cout << BLUE_LINE;
             for (int x = 0; x < GAME_WIDTH; x++) {
                 char out = s[y * GAME_WIDTH + x];
-                if (out == 'o') {
-                    std::cout << GREEN_o;
-                } else if (out == 'O') {
-                    std::cout << GREEN_O;
-                } else if (out == 'x') {
-                    std::cout << RED_x;
-                } else {
-                    std::cout << out;
+                switch (out) {
+                    case ' ':
+                        std::cout << " ";
+                        break;
+                    case 'o':
+                        std::cout << GREEN_o;
+                        break;
+                    case 's':
+                        std::cout << YELLOW_o;
+                        break;
+                    case 'x':
+                        std::cout << RED_x;
+                        break;
+                    case 'O':
+                        std::cout << GREEN_O;
+                        break;
+                    case 'S':
+                        std::cout << YELLOW_O;
+                        break;
                 }
             }
             std::cout << BLUE_LINE;

@@ -2,9 +2,16 @@
 #include <string>
 
 Snake::Snake(Grid &grid, std::mutex &mutex, int x, int y, int playerNum): grid(grid), mutex(mutex), playerNum(playerNum){
-    body.push_back({CellType::Head, x, y});
-    body.push_back({CellType::Snake, x - 1, y});
-    body.push_back({CellType::Snake, x - 2, y});
+    if(playerNum==1) {
+        cellTypeHead = CellType::Head1;
+        cellTypeSnake = CellType::Snake1;
+    } else {
+        cellTypeHead = CellType::Head2;
+        cellTypeSnake = CellType::Snake2;
+    }
+    body.push_back({ cellTypeHead, x, y});
+    body.push_back({cellTypeSnake, x - 1, y});
+    body.push_back({cellTypeSnake, x - 2, y});
     dx = 1;
     dy = 0;
     socket = 0;
@@ -18,12 +25,10 @@ Snake::~Snake() {
 }
 
 void Snake::move() {
-//    std::lock_guard<std::mutex> lock(mutex);
     // Remove the tail of the snake
     auto& tail = body.back();
     mutex.lock();
     grid(tail.x, tail.y).cellType = CellType::Empty;
-
     body.pop_back();
 
     // Add a new cell to the head of the snake in the direction it is moving
@@ -45,7 +50,7 @@ void Snake::move() {
         newY -= grid.getHeight();
     }
 
-    body.insert(body.begin(), {CellType::Snake, newX, newY});
+    body.insert(body.begin(), {getCellTypeHead(), newX, newY});
 
     // check for collision with fruit
     const Cell newHead = body.front();
@@ -56,14 +61,11 @@ void Snake::move() {
 
         // check if the player won
         if (body.size() == WINNING_SIZE) {
-//            final_text = "Player " + std::to_string(playerNum) + " won!";
             grid.setFinalText("Player " + std::to_string(playerNum) + " won!");
             std::cout << grid.getFinalText() << std::endl;
 
-//            std::exit(0);
             grid.setGameOver(true);
         }
-
         mutex.unlock();
         spawnFruit();
 
@@ -71,7 +73,7 @@ void Snake::move() {
         mutex.unlock();
     }
     // check for collision with snake cells
-    if (grid(newHead.x, newHead.y).cellType == CellType::Snake) {
+    if (grid(newHead.x, newHead.y).cellType == CellType::Snake1 || grid(newHead.x, newHead.y).cellType == CellType::Snake2) {
         mutex.lock();
         if (playerNum == 1) {
             grid.setFinalText("Player 2 won!");
@@ -83,7 +85,7 @@ void Snake::move() {
     }
 
     // check for collision with head
-    if (grid(newHead.x, newHead.y).cellType == CellType::Head) {
+    if (grid(newHead.x, newHead.y).cellType == CellType::Head1 || grid(newHead.x, newHead.y).cellType == CellType::Head2) {
         mutex.lock();
         grid.setFinalText("It's a Draw!");
         grid.setGameOver(true);
@@ -95,11 +97,11 @@ void Snake::move() {
     for (auto& cell : body) {
         if (i == 0) {
             mutex.lock();
-            grid(cell.x, cell.y).cellType = CellType::Head;
+            grid(cell.x, cell.y).cellType = getCellTypeHead();
             mutex.unlock();
         } else {
             mutex.lock();
-            grid(cell.x, cell.y).cellType = CellType::Snake;
+            grid(cell.x, cell.y).cellType = getCellTypeSnake();
             mutex.unlock();
         }
         i++;
@@ -151,4 +153,12 @@ void Snake::setSocket(int pSocket) {
 
 int Snake::getSocket() const {
     return socket;
+}
+
+CellType Snake::getCellTypeHead() const {
+    return cellTypeHead;
+}
+
+CellType Snake::getCellTypeSnake() const {
+    return cellTypeSnake;
 }

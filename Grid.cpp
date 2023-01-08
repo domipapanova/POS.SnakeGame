@@ -14,7 +14,6 @@ Grid::~Grid() {
     width = 0;
     height = 0;
     final_text = "";
-    // mozno vektory
 }
 
 
@@ -50,17 +49,25 @@ std::string Grid::draw() {
                     std::cout << " ";
                     screen += " ";
                     break;
-                case CellType::Snake:
+                case CellType::Snake1:
                     std::cout << GREEN_o;
                     screen += "o";
+                    break;
+                case CellType::Snake2:
+                    std::cout << YELLOW_o;
+                    screen += "s";
                     break;
                 case CellType::Fruit:
                     std::cout << RED_x;
                     screen += "x";
                     break;
-                case CellType::Head:
+                case CellType::Head1:
                     std::cout << GREEN_O;
                     screen += "O";
+                    break;
+                case CellType::Head2:
+                    std::cout << YELLOW_O;
+                    screen += "S";
                     break;
             }
         }
